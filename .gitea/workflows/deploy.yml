@@ -43,7 +43,7 @@ jobs:
           echo "Creating models from Modelfiles..."
 
           docker exec ollama ollama create quant_strategist -f /Modelfiles/Modelfile.quant_strategist
-          docker exec ollama ollama create quant_dev -f /Modelfiles/Modelfile.quant_dev
+          # docker exec ollama ollama create quant_dev -f /Modelfiles/Modelfile.quant_dev
 
           echo "Models created successfully."
           
