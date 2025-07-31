@@ -6,9 +6,10 @@ services:
     restart: unless-stopped
     tty: true
     volumes:
-      - ./entrypoint.sh:/entrypoint.sh:z
+      # - ./entrypoint.sh:/entrypoint.sh:z
       - /tank/llm/ollama:/root/.ollama:z
-    entrypoint: /entrypoint.sh
+    # entrypoint: /entrypoint.sh
+    command: ['sleep', 'infinity']
     ports:
       - 0.0.0.0:7869:11434
     environment:
