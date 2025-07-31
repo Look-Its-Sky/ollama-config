@@ -4,10 +4,11 @@ services:
       - ./entrypoint.sh:/entrypoint.sh
       - /tank/llm/ollama:/root/.ollama
     container_name: ollama
+    image: docker.io/ollama/ollama:latest
+    build: .
     pull_policy: always
     tty: true
     restart: unless-stopped
-    image: docker.io/ollama/ollama:latest
     ports:
       - 0.0.0.0:7869:11434
     environment:
