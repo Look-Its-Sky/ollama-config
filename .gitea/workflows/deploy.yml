@@ -37,6 +37,18 @@ jobs:
             sleep 1
           done
           echo "Ollama server is running."
+
+      - name: Verify Modelfiles Mount
+        run: |
+          echo "Host Modelfiles:"
+          ls -la ./Modelfiles/
+          echo "Container Modelfiles:"
+          docker exec ollama ls -la /Modelfiles/
+          # If empty, copy manually as fallback
+          if [ -z "$(docker exec ollama ls /Modelfiles/ 2>/dev/null)" ]; then
+            echo "Volume mount failed, copying manually..."
+            docker cp ./Modelfiles/. ollama:/Modelfiles/
+          fi
       
       - name: Create From Modelfiles
         run: |
