@@ -18,7 +18,7 @@ jobs:
           ls -la
           test -f Dockerfile && echo "Dockerfile found" || exit 1
 
-      - name: Deploy Service Using Custom Image
+      - name: Deploy Service 
         run: |
           docker compose down
           docker compose up -d --build
