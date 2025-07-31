@@ -1,10 +1,27 @@
-name: Deploy Ollama Service
+# name: Deploy Ollama Service
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
+# on:
+#   workflow_dispatch:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   deploy:
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Deploy with Docker Compose
+#         run: |
+#           chmod +x ./entrypoint.sh
+
+#           echo $(ls -lah)
+#           echo $(pwd)
+
+#           docker compose pull
+#           docker compose down 
+#           docker compose up -d
 
 jobs:
   deploy:
@@ -12,13 +29,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Run Comprehensive Diagnostics
+        id: diagnostics
+        run: |
+          echo "--- 1. Verifying File Permissions and Context ---"
+          ls -laZ
+          
+          echo "--- 2. Setting Execute Permission ---"
+          chmod +x ./entrypoint.sh
+          echo "chmod command finished. Verifying permissions again:"
+          ls -laZ ./entrypoint.sh
+          
+          echo "--- 3. Checking Filesystem Mount Options ---"
+          # Grep for the mount point of the current directory to find 'noexec'
+          mount | grep " on $(df -P . | awk 'NR==2 {print $6}')" || echo "Mount point not found in 'mount' output."
+          
+          echo "--- 4. Checking SELinux Status ---"
+          sestatus || echo "sestatus command not found or failed."
+
       - name: Deploy with Docker Compose
         run: |
-          chmod +x ./entrypoint.sh
-
-          echo $(ls -lah)
-          echo $(pwd)
-
           docker compose pull
-          docker compose down 
+          docker compose down || true
           docker compose up -d
