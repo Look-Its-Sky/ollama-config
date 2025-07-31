@@ -29,15 +29,12 @@
 
 services:
   ollama:
-    # Tell Docker Compose to build the image from the local Dockerfile
     build: .
     container_name: ollama
     restart: unless-stopped
     ports:
       - "0.0.0.0:7869:11434"
     volumes:
-      # The Modelfiles mount is no longer needed
-      # We only need to persist the created models and Ollama data
       - /tank/llm/ollama:/root/.ollama:z
     deploy:
       resources:

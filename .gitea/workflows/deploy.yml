@@ -12,6 +12,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Verify File Structure Before Build
+        run: |
+          echo "--- Verifying all files in the repository checkout ---"
+          echo "Current working directory is:"
+          pwd
+          
+          echo "Full recursive file listing:"
+          find . -ls
+
       - name: Deploy with Docker Compose
         env:
           COMPOSE_PROJECT_PATH: ${{ gitea.workspace }}
