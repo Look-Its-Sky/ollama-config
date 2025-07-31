@@ -36,8 +36,7 @@ jobs:
       - name: Create From Modelfiles
         run: |
           echo "$(pwd)"
-          echo "$(ls -lah)"
-
+          echo "$(ls -lah Modelfiles)"
           echo "$(docker exec ollama ls -lah /Modelfiles)"
 
           echo "Creating models from Modelfiles..."
