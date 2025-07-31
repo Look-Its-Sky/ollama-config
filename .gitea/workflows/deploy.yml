@@ -1,4 +1,68 @@
-name: Deploy Ollama Service
+# name: Deploy Ollama Service
+
+# on:
+#   workflow_dispatch:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   deploy:
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Verify File Structure Before Build
+#         run: |
+#           echo "--- Verifying all files in the repository checkout ---"
+#           echo "Current working directory is:"
+#           pwd
+          
+#           echo "Full recursive file listing:"
+#           find . -ls
+
+#       - name: Deploy with Docker Compose
+#         env:
+#           COMPOSE_PROJECT_PATH: ${{ gitea.workspace }}
+#         run: |
+#           docker compose pull
+#           docker compose down 
+#           docker compose up -d
+
+#       - name: Wait for Ollama to be ready
+#         run: |
+#           echo "Waiting for Ollama server to respond on port 7869..."
+#           timeout=120
+#           while ! curl -s http://z420:7869/ > /dev/null; do
+#             timeout=$((timeout - 1))
+#             if [ $timeout -le 0 ]; then
+#               echo "Error: Ollama server did not start in time."
+#               docker logs ollama
+#               exit 1
+#             fi
+#             sleep 1
+#           done
+#           echo "Ollama server is running."
+      
+#       - name: Create From Modelfiles
+#         run: |
+#           # chmod 777 Modelfiles/*
+
+#           echo "$(pwd)"
+#           echo "$(ls -lah Modelfiles)"
+#           echo "$(docker exec ollama ls -lah /Modelfiles)"
+
+#           docker exec ollama ls -laR /Modelfiles
+
+#           echo "Creating models from Modelfiles..."
+
+#           docker exec ollama ollama create quant_strategist -f /Modelfiles/Modelfile.quant_strategist
+#           docker exec ollama ollama create quant_dev -f /Modelfiles/Modelfile.quant_dev
+
+#           echo "Models created successfully."
+          
+# .gitea/workflows/deploy.yml
+name: Build and Deploy Ollama
 
 on:
   workflow_dispatch:
@@ -8,32 +72,30 @@ on:
 
 jobs:
   deploy:
+    runs-on: self-hosted
+    env:
+      IMAGE_NAME: my-ollama-app
+      MODEL_NAME: quant_strategist
+      BASE_MODEL: unsloth/deepseek-r1-distill-llama-70b-gguf:Q4_K_M
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify File Structure Before Build
+      - name: Build Custom Docker Image
         run: |
-          echo "--- Verifying all files in the repository checkout ---"
-          echo "Current working directory is:"
-          pwd
-          
-          echo "Full recursive file listing:"
-          find . -ls
+          docker build -t ${{ env.IMAGE_NAME }}:latest .
 
-      - name: Deploy with Docker Compose
-        env:
-          COMPOSE_PROJECT_PATH: ${{ gitea.workspace }}
+      - name: Deploy Service Using Custom Image
         run: |
-          docker compose pull
-          docker compose down 
+          docker compose down || true
           docker compose up -d
 
       - name: Wait for Ollama to be ready
         run: |
-          echo "Waiting for Ollama server to respond on port 7869..."
+          echo "Waiting for Ollama server..."
           timeout=120
-          while ! curl -s http://z420:7869/ > /dev/null; do
+          while ! curl -s http://localhost:7869/ > /dev/null; do
             timeout=$((timeout - 1))
             if [ $timeout -le 0 ]; then
               echo "Error: Ollama server did not start in time."
@@ -42,22 +104,15 @@ jobs:
             fi
             sleep 1
           done
-          echo "Ollama server is running."
-      
-      - name: Create From Modelfiles
+          echo "✅ Ollama server is running."
+
+      - name: Create Custom Model
         run: |
-          # chmod 777 Modelfiles/*
-
-          echo "$(pwd)"
-          echo "$(ls -lah Modelfiles)"
-          echo "$(docker exec ollama ls -lah /Modelfiles)"
-
-          docker exec ollama ls -laR /Modelfiles
-
-          echo "Creating models from Modelfiles..."
-
-          docker exec ollama ollama create quant_strategist -f /Modelfiles/Modelfile.quant_strategist
-          docker exec ollama ollama create quant_dev -f /Modelfiles/Modelfile.quant_dev
-
-          echo "Models created successfully."
-          
+          if ! docker exec ollama ollama list | grep -q "^${MODEL_NAME}"; then
+            echo "Creating custom model '${MODEL_NAME}'..."
+            docker exec ollama ollama pull "${BASE_MODEL}"
+            docker exec ollama ollama create "${MODEL_NAME}" -f /Modelfiles/Modelfile.quant_strategist
+            echo "✅ Model created."
+          else
+            echo "✅ Model already exists."
+          fi
