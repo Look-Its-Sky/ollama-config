@@ -35,16 +35,10 @@ jobs:
       
       - name: Create From Modelfiles
         run: |
-          if ! docker exec ollama ollama list | grep -q "^${MODEL_NAME}"; then
-            echo "🚀 Model '${MODEL_NAME}' not found. Creating it..."
-            
-            echo "Pulling base model: ${BASE_MODEL}..."
-            docker exec ollama ollama pull "${BASE_MODEL}"
-            
-            echo "Creating custom model '${MODEL_NAME}'..."
-            docker exec ollama ollama create "${MODEL_NAME}" -f /Modelfile
-            
-            echo "Model '${MODEL_NAME}' created successfully"
-          else
-            echo "Model '${MODEL_NAME}' already exists. Skipping creation"
-          fi
+          echo "Creating models from Modelfiles..."
+
+          docker exec ollama ollama create --from /Modelfiles/QuantStrategist
+          docker exec ollama ollama create --from /Modelfiles/QuantDev
+
+          echo "Models created successfully."
+          
