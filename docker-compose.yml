@@ -6,8 +6,7 @@ services:
     restart: unless-stopped
     tty: true
     volumes:
-      - ./QuantStrategist:/Modelfiles/QuantStrategist
-      - ./QuantDev:/Modelfiles/QuantDev
+      - ./Modelfiles:/Modelfiles
       - /tank/llm/ollama:/root/.ollama
     ports:
       - 0.0.0.0:7869:11434
