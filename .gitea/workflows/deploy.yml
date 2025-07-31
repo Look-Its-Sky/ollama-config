@@ -72,10 +72,12 @@ jobs:
           docker exec ollama ollama create quant_dev -f /Modelfiles/Modelfile.quant_dev
         
       - name: Preload Models
+        env: 
+          OLLAMA_SERVER: ${{ vars.OLLAMA_SERVER }}
         run: |
           echo "Pre-loading models" 
-          
-          curl --silent --show-error -X POST http://z420:7869/v1/chat/completions \
+
+          curl --silent --show-error -X POST http://$OLLAMA_SERVER/v1/chat/completions \
             -H "Content-Type: application/json" \
             -d '{
                   "model": "quant_strategist",
@@ -87,8 +89,8 @@ jobs:
                   ],
                   "stream": false
                 }' &
-          
-          curl --silent --show-error -X POST http://z420:7869/v1/chat/completions \
+
+          curl --silent --show-error -X POST http://$OLLAMA_SERVER/v1/chat/completions \
             -H "Content-Type: application/json" \
             -d '{
                   "model": "quant_dev",
