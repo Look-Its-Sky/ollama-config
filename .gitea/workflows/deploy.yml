@@ -17,6 +17,7 @@ jobs:
           chmod +x ./entrypoint.sh
 
           echo $(ls -lah)
+          echo $(pwd)
 
           docker compose pull
           docker compose down 
