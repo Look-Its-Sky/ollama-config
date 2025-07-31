@@ -6,10 +6,9 @@ services:
     restart: unless-stopped
     tty: true
     volumes:
-      - ./entrypoint.sh:/entrypoint.sh
+      - ./QuantStrategist:/Modelfiles/QuantStrategist
+      - ./QuantDev:/Modelfiles/QuantDev
       - /tank/llm/ollama:/root/.ollama
-    entrypoint: /entrypoint.sh
-    # command: ['sleep', 'infinity']
     ports:
       - 0.0.0.0:7869:11434
     environment:
@@ -18,9 +17,6 @@ services:
       - OLLAMA_MAX_LOADED_MODELS=1
       # - OLLAMA_CONTEXT_LENGTH=4096
       - OLLAMA_KV_CACHE_TYPE=q4_0
-
-      - BASE_MODEL=hf.co/unsloth/DeepSeek-R1-Distill-Llama-70B-GGUF:Q4_K_M
-      - MODEL=quant_strategist
     deploy:
       resources:
         limits:

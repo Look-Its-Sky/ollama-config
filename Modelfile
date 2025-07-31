@@ -1,5 +1,0 @@
-FROM hf.co/unsloth/DeepSeek-R1-Distill-Llama-70B-GGUF:Q4_K_M
-
-PARAMETER temperature 0.1
-PARAMETER top_k 40
-PARAMETER top_p 0.9

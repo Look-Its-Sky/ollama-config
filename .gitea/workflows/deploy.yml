@@ -24,3 +24,34 @@ jobs:
           docker compose pull
           docker compose down 
           docker compose up -d
+
+      - name: Wait for Ollama to be ready
+        run: |
+          echo "Waiting for Ollama server to respond on port 7869..."
+          timeout=120
+          while ! curl -s http://localhost:7869/ > /dev/null; do
+            timeout=$((timeout - 1))
+            if [ $timeout -le 0 ]; then
+              echo "Error: Ollama server did not start in time."
+              docker logs ollama
+              exit 1
+            fi
+            sleep 1
+          done
+          echo "Ollama server is running."
+      
+      - name: Create From Modelfiles
+        run: |
+          if ! docker exec ollama ollama list | grep -q "^${MODEL_NAME}"; then
+            echo "🚀 Model '${MODEL_NAME}' not found. Creating it..."
+            
+            echo "Pulling base model: ${BASE_MODEL}..."
+            docker exec ollama ollama pull "${BASE_MODEL}"
+            
+            echo "Creating custom model '${MODEL_NAME}'..."
+            docker exec ollama ollama create "${MODEL_NAME}" -f /Modelfile
+            
+            echo "Model '${MODEL_NAME}' created successfully"
+          else
+            echo "Model '${MODEL_NAME}' already exists. Skipping creation"
+          fi
