@@ -12,10 +12,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # --- ADD THIS DEBUGGING STEP ---
+      - name: List files in workspace
+        run: |
+          echo "Verifying file existence and location:"
+          ls -la
+      # ------------------------------
+
+      - name: Make entrypoint script executable
+        run: chmod +x ./entrypoint.sh
+
       - name: Deploy with Docker Compose
         run: |
-          chmod +x ./entrypoint.sh
-
           docker compose pull
           docker compose down || true
           docker compose up -d
