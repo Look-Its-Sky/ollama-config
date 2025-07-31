@@ -38,6 +38,8 @@ jobs:
           echo "$(pwd)"
           echo "$(ls -lah)"
 
+          echo "$(docker exec ollama ls -lah /Modelfiles)"
+
           echo "Creating models from Modelfiles..."
 
           docker exec ollama ollama create quant_strategist -f /Modelfiles/QuantStrategist
