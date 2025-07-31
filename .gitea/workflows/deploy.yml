@@ -48,6 +48,10 @@ jobs:
           
           envsubst < Modelfiles/Modelfile.quant_strategist_template > Modelfile.quant_strategist
           envsubst < Modelfiles/Modelfile.quant_dev_template > Modelfile.quant_dev 
+        
+          echo "Modelfiles created:"
+          echo "quant_strategist: $(cat Modelfile.quant_strategist)"
+          echo "quant_dev: $(cat Modelfile.quant_dev)"
 
       - name: Verify Modelfiles Mount
         run: |
@@ -66,3 +70,26 @@ jobs:
           docker exec ollama ls -laR /Modelfiles
           docker exec ollama ollama create quant_strategist -f /Modelfiles/Modelfile.quant_strategist
           docker exec ollama ollama create quant_dev -f /Modelfiles/Modelfile.quant_dev
+        
+      - name: Preload Models
+        run: |
+          echo "Pre-loading models" 
+          
+          curl --silent --show-error -X POST http://localhost:7869/v1/chat/completions \
+            -H "Content-Type: application/json" \
+            -d '{
+                  "model": "quant_strategist",
+                  "messages": [{"role" : "system", "content": "You are mute. You do not respond to any messages"}, {"role": "user", "content": "Initialize"}],
+                  "stream": false
+                }' &
+          
+          curl --silent --show-error -X POST http://localhost:7869/v1/chat/completions \
+            -H "Content-Type: application/json" \
+            -d '{
+                  "model": "quant_dev",
+                  "messages": [{"role" : "system", "content": "You are mute. You do not respond to any messages"}, {"role": "user", "content": "Initialize"}],
+                  "stream": false
+                }' &
+
+          wait
+          echo "Models pre-loaded successfully"
