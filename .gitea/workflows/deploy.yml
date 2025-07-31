@@ -4,66 +4,6 @@ on:
   push:
   workflow_dispatch:
 
-# jobs:
-#   deploy:
-#     env:
-#       IMAGE_NAME: ollama 
-
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
-
-#       - name: Verify Dockerfile
-#         run: |
-#           ls -la
-#           test -f Dockerfile && echo "Dockerfile found" || exit 1
-
-#       # - name: Build Custom Docker Image
-#       #   run: |
-#       #     DOCKER_BUILDKIT=0 docker build \
-#       #       -t ${{ env.IMAGE_NAME }}:latest \
-#       #       -f Dockerfile .
-
-#       - name: Deploy Service Using Custom Image
-#         run: |
-#           docker compose down || true
-#           docker compose up -d --build || true
-
-#       - name: Check Docker logs
-#         run: |
-#           docker info
-#           journalctl -u docker.service -n 50 --no-pager
-
-#       # - name: Wait for Ollama to be ready
-#       #   run: |
-#       #     echo "Waiting for Ollama server to respond on port 7869..."
-#       #     timeout=120
-#       #     while ! curl -s http://z420:7869/ > /dev/null; do
-#       #       timeout=$((timeout - 1))
-#       #       if [ $timeout -le 0 ]; then
-#       #         echo "Error: Ollama server did not start in time."
-#       #         docker logs ollama
-#       #         exit 1
-#       #       fi
-#       #       sleep 1
-#       #     done
-#       #     echo "Ollama server is running."
-      
-#       # - name: Create From Modelfiles
-#       #   run: |
-#       #     echo "$(pwd)"
-#       #     echo "$(ls -lah Modelfiles)"
-#       #     echo "$(docker exec ollama ls -lah /Modelfiles)"
-
-#       #     docker exec ollama ls -laR /Modelfiles
-
-#       #     echo "Creating models from Modelfiles..."
-
-#       #     docker exec ollama ollama create quant_strategist -f /Modelfiles/Modelfile.quant_strategist
-#       #     # docker exec ollama ollama create quant_dev -f /Modelfiles/Modelfile.quant_dev
-
-#       #     echo "Models created successfully."
-
 jobs:
   deploy:
     env:
@@ -78,14 +18,9 @@ jobs:
           ls -la
           test -f Dockerfile && echo "Dockerfile found" || exit 1
 
-      - name: Build Custom Docker Image
-        run: |
-          docker buildx use default
-          DOCKER_BUILDKIT=0 docker build -t ${{ env.IMAGE_NAME }}:latest .
-
       - name: Deploy Service Using Custom Image
         run: |
-          docker compose down || true
+          docker compose down
           docker compose up -d --build
 
       - name: Wait for Ollama to be ready
