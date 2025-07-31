@@ -41,6 +41,8 @@ jobs:
           echo "$(ls -lah Modelfiles)"
           echo "$(docker exec ollama ls -lah /Modelfiles)"
 
+          docker exec ollama ls -laR /Modelfiles
+
           echo "Creating models from Modelfiles..."
 
           docker exec ollama ollama create quant_strategist -f /Modelfiles/Modelfile.quant_strategist
