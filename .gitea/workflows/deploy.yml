@@ -9,14 +9,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build Custom Docker Image
-        run: |
-          tar -cz . | docker build -t ${{ env.IMAGE_NAME }}:latest -
+      # - name: Build Custom Docker Image
+      #   run: |
+      #     tar -cz . | docker build -t ${{ env.IMAGE_NAME }}:latest -
 
       - name: Deploy Service Using Custom Image
         run: |
-          docker compose down || true
-          docker compose up -d --build
+          docker compose -f docker-compose.yml build
+          docker compose -f docker-compose.yml down
+          docker compose -f docker-compose.yml up -d
 
       - name: Wait for Ollama to be ready
         run: |
