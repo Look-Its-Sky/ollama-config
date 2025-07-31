@@ -67,8 +67,8 @@ jobs:
 
       - name: Pull Models 
         run: |
-          docker exec ollama pull ${ vars.BASE_MODEL_STRATEGIST }
-          docker exec ollama pull ${ vars.BASE_MODEL_DEV }
+          docker exec ollama pull "${{ vars.BASE_MODEL_STRATEGIST }}"
+          docker exec ollama pull "${{ vars.BASE_MODEL_DEV }}"
 
       - name: Create From Modelfiles
         run: |
