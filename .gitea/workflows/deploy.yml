@@ -16,7 +16,7 @@ jobs:
       - name: Deploy Service Using Custom Image
         run: |
           docker compose down || true
-          docker compose up -d
+          docker compose up -d --build
 
       - name: Wait for Ollama to be ready
         run: |
