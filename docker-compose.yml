@@ -1,14 +1,14 @@
 services:
   ollama:
+    container_name: ollama
+    image: docker.io/ollama/ollama:latest
+    entrypoint: /entrypoint.sh
+    pull_policy: always
+    restart: unless-stopped
+    tty: true
     volumes:
       - ./entrypoint.sh:/entrypoint.sh
       - /tank/llm/ollama:/root/.ollama
-    container_name: ollama
-    # image: docker.io/ollama/ollama:latest
-    build: .
-    pull_policy: always
-    tty: true
-    restart: unless-stopped
     ports:
       - 0.0.0.0:7869:11434
     environment:
@@ -21,7 +21,6 @@ services:
 
       - BASE_MODEL=hf.co/unsloth/DeepSeek-R1-Distill-Llama-70B-GGUF:Q4_K_M
       - MODEL=quant_strategist
-
     deploy:
       resources:
         limits:
