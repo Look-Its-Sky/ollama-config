@@ -22,7 +22,7 @@ jobs:
         run: |
           echo "Waiting for Ollama server to respond on port 7869..."
           timeout=120
-          while ! curl -s http://localhost:7869/ > /dev/null; do
+          while ! curl -s http://z420:7869/ > /dev/null; do
             timeout=$((timeout - 1))
             if [ $timeout -le 0 ]; then
               echo "Error: Ollama server did not start in time."
