@@ -1,47 +1,25 @@
-# services:
-#   ollama:
-#     container_name: ollama
-#     # image: docker.io/ollama/ollama:latest
-#     build: .
-#     pull_policy: always
-#     restart: unless-stopped
-#     tty: true
-#     volumes:
-#       - ${COMPOSE_PROJECT_PATH}/Modelfiles:/Modelfiles:z
-#       - /tank/llm/ollama:/root/.ollama:z
-#     ports:
-#       - 0.0.0.0:7869:11434
-#     environment:
-#       - OLLAMA_KEEP_ALIVE=-1
-#       - OLLAMA_FLASH_ATTENTION=1
-#       - OLLAMA_MAX_LOADED_MODELS=1
-#       # - OLLAMA_CONTEXT_LENGTH=4096
-#       - OLLAMA_KV_CACHE_TYPE=q4_0
-#     deploy:
-#       resources:
-#         limits:
-#           cpus: '16'
-#         reservations:
-#           devices:
-#             - driver: nvidia
-#               count: all
-#               capabilities: [gpu]
-
 services:
   ollama:
-    # Use the explicit build syntax instead of the shorthand "build: ."
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: default
     container_name: ollama
+    image: docker.io/ollama/ollama:latest
+    pull_policy: always
     restart: unless-stopped
-    ports:
-      - "0.0.0.0:7869:11434"
+    tty: true
     volumes:
+      - ./Modelfiles:/Modelfiles:z
       - /tank/llm/ollama:/root/.ollama:z
+    ports:
+      - 0.0.0.0:7869:11434
+    environment:
+      - OLLAMA_KEEP_ALIVE=-1
+      - OLLAMA_FLASH_ATTENTION=1
+      - OLLAMA_MAX_LOADED_MODELS=1
+      # - OLLAMA_CONTEXT_LENGTH=4096
+      - OLLAMA_KV_CACHE_TYPE=q4_0
     deploy:
       resources:
+        limits:
+          cpus: '16'
         reservations:
           devices:
             - driver: nvidia
