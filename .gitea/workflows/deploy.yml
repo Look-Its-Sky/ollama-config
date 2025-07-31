@@ -1,5 +1,9 @@
 name: Build and Deploy Ollama
 
+on:
+  push:
+  workflow_dispatch:
+
 jobs:
   deploy:
     env:
