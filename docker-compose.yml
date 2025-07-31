@@ -2,17 +2,16 @@ services:
   ollama:
     container_name: ollama
     image: docker.io/ollama/ollama:latest
-    entrypoint: /entrypoint.sh
     pull_policy: always
     restart: unless-stopped
     tty: true
     volumes:
-      - ./entrypoint.sh:/entrypoint.sh:z
-      - /tank/llm/ollama:/root/.ollama:z
+      - ./entrypoint.sh:/entrypoint.sh
+      - /tank/llm/ollama:/root/.ollama
+    entrypoint: /entrypoint.sh
     ports:
       - 0.0.0.0:7869:11434
     environment:
-      # - OLLAMA_KEEP_ALIVE=24h
       - OLLAMA_KEEP_ALIVE=-1
       - OLLAMA_FLASH_ATTENTION=1
       - OLLAMA_MAX_LOADED_MODELS=1
