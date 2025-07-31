@@ -29,7 +29,10 @@
 
 services:
   ollama:
-    build: .
+    # Use the explicit build syntax instead of the shorthand "build: ."
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: ollama
     restart: unless-stopped
     ports:
