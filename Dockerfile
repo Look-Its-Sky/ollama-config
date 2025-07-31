@@ -1,5 +1,8 @@
 FROM ollama/ollama
 
-RUN ollama pull hf.co/unsloth/DeepSeek-R1-Distill-Llama-70B-GGUF:Q4_K_M
+ARG BASE_MODEL
+ENV BASE_MODEL=${BASE_MODEL}
+
+RUN ollama pull ${BASE_MODEL}
 COPY Modelfile /Modelfile 
 RUN ollama create quant_strategist -f /Modelfile
