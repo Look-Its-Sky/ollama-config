@@ -38,6 +38,14 @@ jobs:
           done
           echo "Ollama server is running."
 
+
+      - name: Create Modelfile from Template
+        env:
+          BASE_MODEL: ${{ github.event.inputs.base_model }}
+        run: |
+          envsubst < Modelfiles/Modelfile.quant_strategist_template > Modelfile.quant_strategist
+          envsubst < Modelfiles/Modelfile.quant_dev_template > Modelfile.quant_dev 
+
       - name: Verify Modelfiles Mount
         run: |
           echo "Host Modelfiles:"
@@ -49,7 +57,7 @@ jobs:
             echo "Volume mount failed, copying manually..."
             docker cp ./Modelfiles/. ollama:/Modelfiles/
           fi
-      
+
       - name: Create From Modelfiles
         run: |
           docker exec ollama ls -laR /Modelfiles
