@@ -19,5 +19,5 @@ jobs:
 
       - name: Deploy Docker image
         run: |
-          docker compose down 
+          docker compose down || true 
           docker compose up --build -d 
