@@ -1,0 +1,29 @@
+services:
+  ollama:
+    volumes:
+      - ./entrypoint.sh:/entrypoint.sh
+      - /tank/llm/ollama:/root/.ollama
+    container_name: ollama
+    pull_policy: always
+    tty: true
+    restart: unless-stopped
+    image: docker.io/ollama/ollama:latest
+    ports:
+      - 0.0.0.0:7869:11434
+    environment:
+      # - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_KEEP_ALIVE=-1
+      - OLLAMA_FLASH_ATTENTION=1
+      - OLLAMA_MAX_LOADED_MODELS=1
+      # - OLLAMA_CONTEXT_LENGTH=4096
+      - OLLAMA_KV_CACHE_TYPE=q4_0
+
+    deploy:
+      resources:
+        limits:
+          cpus: '16'
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
