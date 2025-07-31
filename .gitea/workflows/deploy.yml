@@ -23,6 +23,12 @@
 #           docker compose down 
 #           docker compose up -d
 
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
 jobs:
   deploy:
     steps:
