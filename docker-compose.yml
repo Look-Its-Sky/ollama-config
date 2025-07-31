@@ -33,6 +33,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: default
     container_name: ollama
     restart: unless-stopped
     ports:
