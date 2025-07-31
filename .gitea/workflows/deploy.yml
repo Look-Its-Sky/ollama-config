@@ -75,7 +75,7 @@ jobs:
         run: |
           echo "Pre-loading models" 
           
-          curl --silent --show-error -X POST http://localhost:7869/v1/chat/completions \
+          curl --silent --show-error -X POST http://z420:7869/v1/chat/completions \
             -H "Content-Type: application/json" \
             -d '{
                   "model": "quant_strategist",
@@ -88,7 +88,7 @@ jobs:
                   "stream": false
                 }' &
           
-          curl --silent --show-error -X POST http://localhost:7869/v1/chat/completions \
+          curl --silent --show-error -X POST http://z420:7869/v1/chat/completions \
             -H "Content-Type: application/json" \
             -d '{
                   "model": "quant_dev",
