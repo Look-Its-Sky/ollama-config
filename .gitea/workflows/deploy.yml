@@ -72,7 +72,6 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
     env:
       IMAGE_NAME: my-ollama-app
       MODEL_NAME: quant_strategist
