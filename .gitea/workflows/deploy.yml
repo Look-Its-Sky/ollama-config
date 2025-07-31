@@ -37,8 +37,8 @@ jobs:
         run: |
           echo "Creating models from Modelfiles..."
 
-          docker exec ollama ollama create -f /Modelfiles/QuantStrategist
-          docker exec ollama ollama create -f /Modelfiles/QuantDev
+          docker exec ollama ollama create quant_strategist -f /Modelfiles/QuantStrategist
+          docker exec ollama ollama create quant_dev -f /Modelfiles/QuantDev
 
           echo "Models created successfully."
           
