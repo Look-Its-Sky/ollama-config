@@ -14,13 +14,6 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: |
-          chmod +x ./entrypoint.sh
-
-          echo $(ls -lah)
-          echo $(pwd)
-
-          echo $(cat entrypoint.sh)
-
           docker compose pull
           docker compose down 
           docker compose up -d
