@@ -11,7 +11,7 @@ services:
     ports:
       - 0.0.0.0:7869:11434
     environment:
-      - OLLAMA_KEEP_ALIVE=1h
+      - OLLAMA_KEEP_ALIVE=-1
       - OLLAMA_FLASH_ATTENTION=1
       - OLLAMA_MAX_LOADED_MODELS=2
       - OLLAMA_CONTEXT_LENGTH=1024
