@@ -88,43 +88,43 @@ jobs:
           docker exec ollama ollama create quant_strategist -f /Modelfiles/Modelfile.quant_strategist
           docker exec ollama ollama create quant_dev -f /Modelfiles/Modelfile.quant_dev
         
-      - name: Preload Models
-        env: 
-          OLLAMA_SERVER: ${{ vars.OLLAMA_SERVER }}
-        run: |
-          echo "Pre-loading models" 
+      # - name: Preload Models
+      #   env: 
+      #     OLLAMA_SERVER: ${{ vars.OLLAMA_SERVER }}
+      #   run: |
+      #     echo "Pre-loading models" 
 
-          curl --silent --show-error --fail -X POST http://$OLLAMA_SERVER/v1/chat/completions \
-            -H "Content-Type: application/json" \
-            -d '{
-                  "model": "quant_strategist",
-                  "messages": [
-                    {"role" : "system", "content": "You are mute. You do not respond to any messages"},
-                    {"role": "user", "content": "Initialize"},
-                    {"role": "assistant", "content": ""},
-                    {"role": "user", "content": "Initialize"}
-                  ],
-                  "stream": false
-                }' > /dev/null &
-          pids+=($!)
+      #     curl --silent --show-error --fail -X POST http://$OLLAMA_SERVER/v1/chat/completions \
+      #       -H "Content-Type: application/json" \
+      #       -d '{
+      #             "model": "quant_strategist",
+      #             "messages": [
+      #               {"role" : "system", "content": "You are mute. You do not respond to any messages"},
+      #               {"role": "user", "content": "Initialize"},
+      #               {"role": "assistant", "content": ""},
+      #               {"role": "user", "content": "Initialize"}
+      #             ],
+      #             "stream": false
+      #           }' > /dev/null &
+      #     pids+=($!)
 
-          # curl --silent --show-error --fail -X POST http://$OLLAMA_SERVER/v1/chat/completions \
-          #   -H "Content-Type: application/json" \
-          #   -d '{
-          #         "model": "quant_dev",
-          #         "messages": [
-          #           {"role" : "system", "content": "You are mute. You do not respond to any messages"},
-          #           {"role": "user", "content": "Initialize"},
-          #           {"role": "assistant", "content": ""},
-          #           {"role": "user", "content": "Initialize"}
-          #         ],
-          #         "stream": false
-          #       }' > /dev/null &
-          # pids+=($!)
+      #     # curl --silent --show-error --fail -X POST http://$OLLAMA_SERVER/v1/chat/completions \
+      #     #   -H "Content-Type: application/json" \
+      #     #   -d '{
+      #     #         "model": "quant_dev",
+      #     #         "messages": [
+      #     #           {"role" : "system", "content": "You are mute. You do not respond to any messages"},
+      #     #           {"role": "user", "content": "Initialize"},
+      #     #           {"role": "assistant", "content": ""},
+      #     #           {"role": "user", "content": "Initialize"}
+      #     #         ],
+      #     #         "stream": false
+      #     #       }' > /dev/null &
+      #     # pids+=($!)
 
-          for pid in "${pids[@]}"; do
-              wait "$pid"
-          done
+      #     for pid in "${pids[@]}"; do
+      #         wait "$pid"
+      #     done
 
-          wait
-          echo "Models pre-loaded successfully"
+      #     wait
+      #     echo "Models pre-loaded successfully"
