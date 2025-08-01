@@ -43,7 +43,6 @@ jobs:
           done
           echo "Ollama server is running."
 
-
       - name: Create Modelfile from Template
         env:
           BASE_MODEL: ${{ github.event.inputs.base_model }}
@@ -53,6 +52,8 @@ jobs:
           
           envsubst < Modelfiles/Modelfile.quant_strategist_template > Modelfile.quant_strategist
           envsubst < Modelfiles/Modelfile.quant_dev_template > Modelfile.quant_dev 
+
+          docker exec ollama mkdir -p /Modelfiles
 
           echo "Modelfiles created:"
           echo "quant_strategist: $(cat Modelfile.quant_strategist)"
@@ -65,8 +66,6 @@ jobs:
 
           echo "Container Modelfiles:"
           docker exec ollama ls -la /Modelfiles/
-
-          docker exec ollama mkdir -p /Modelfiles
 
           # If empty, copy manually as fallback
           if [ -z "$(docker exec ollama ls /Modelfiles/ 2>/dev/null)" ]; then
