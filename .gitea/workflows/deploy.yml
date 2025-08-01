@@ -27,8 +27,10 @@ jobs:
           echo "Stopping and removing existing Ollama container.... if any"
 
           # docker compose down  || hadtostop=false 
+
           docker stop ollama || hadtostop=false
           docker rm ollama || hadtostop=false 
+          
           # docker compose up -d --build
 
           if [ "$hadtostop" = true ]; then
@@ -38,7 +40,9 @@ jobs:
           fi
 
           docker build \
-              --build-arg ${{  }}
+              --build-arg BASE_MODEL_STRATEGIST=${{ vars.BASE_MODEL_STRATEGIST }} \
+              --build-arg BASE_MODEL_DEV=${{ vars.BASE_MODEL_DEV }} \
+              -t ollama-custom .
 
           docker run -d \
               --name ollama \
