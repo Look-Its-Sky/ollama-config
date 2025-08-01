@@ -37,6 +37,7 @@ jobs:
               -e OLLAMA_FLASH_ATTENTION=1 \
               -e OLLAMA_MAX_LOADED_MODELS=2 \
               -e OLLAMA_CONTEXT_LENGTH=1024 \
+              -e OLLAMA_NUM_PARALLEL=4 \
               -e OLLAMA_KV_CACHE_TYPE=q4_0 \
               ollama/ollama:latest
 
