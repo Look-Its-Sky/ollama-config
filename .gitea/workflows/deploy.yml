@@ -75,8 +75,8 @@ jobs:
           echo "quant_dev: $(cat Modelfile.quant_dev)"
 
           echo "Inside Container: $(docker exec ollama ls /Modelfiles/)"
-          docker cp Modelfiles/Modelfile.quant_strategist ollama:/Modelfiles/Modelfile.quant_strategist
-          docker cp Modelfiles/Modelfile.quant_dev ollama:/Modelfiles/Modelfile.quant_dev
+          docker cp Modelfile.quant_strategist ollama:/Modelfiles/Modelfile.quant_strategist
+          docker cp Modelfile.quant_dev ollama:/Modelfiles/Modelfile.quant_dev
 
       - name: Verify Modelfiles
         run: |
