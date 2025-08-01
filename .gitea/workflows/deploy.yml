@@ -6,33 +6,20 @@ on:
 
 jobs:
   deploy:
-    env:
-      IMAGE_NAME: ollama 
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Verify Dockerfile
-        run: |
-          ls -la
-          test -f Dockerfile && echo "Dockerfile found" || exit 1
-
       - name: Deploy Service 
         run: |
           hadtostop=true 
-
           echo "Stopping and removing existing Ollama container.... if any"
-
-          # docker compose down  || hadtostop=false 
 
           docker stop ollama || hadtostop=false
           docker rm ollama || hadtostop=false 
           
-          # docker compose up -d --build
-
           if [ "$hadtostop" = true ]; then
             echo "Ollama container stopped and removed successfully."
           else
@@ -62,6 +49,7 @@ jobs:
         run: |
           echo "Waiting for Ollama server to respond on port 7869..."
           timeout=120
+
           while ! curl -s http://z420:7869/ > /dev/null; do
             timeout=$((timeout - 1))
             if [ $timeout -le 0 ]; then
@@ -71,6 +59,7 @@ jobs:
             fi
             sleep 1
           done
+
           echo "Ollama server is running."
 
       - name: Create Modelfile from Template
@@ -83,8 +72,6 @@ jobs:
           
           envsubst < Modelfiles/Modelfile.quant_strategist_template > Modelfile.quant_strategist
           envsubst < Modelfiles/Modelfile.quant_dev_template > Modelfile.quant_dev 
-
-          echo "$(ls)"
 
           docker exec ollama mkdir -p /Modelfiles
 
