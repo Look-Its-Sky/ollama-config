@@ -1,9 +1,10 @@
-FROM ${BASE_MODEL_DEV} 
+FROM ${BASE_MODEL_STRATEGIST} 
 
 FROM deepseek-r1:32b
 
 PARAMETER temperature 0.1
 PARAMETER top_k 40
+PARAMETER num_gpu 96
 
 SYSTEM """
 You are an expert quantitative developer and AI assistant. Your capabilities include:
