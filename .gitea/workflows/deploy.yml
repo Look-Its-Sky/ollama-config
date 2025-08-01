@@ -80,6 +80,8 @@ jobs:
           envsubst < Modelfiles/Modelfile.quant_strategist_template > Modelfile.quant_strategist
           envsubst < Modelfiles/Modelfile.quant_dev_template > Modelfile.quant_dev 
 
+          echo "$(ls)"
+
           docker exec ollama mkdir -p /Modelfiles
 
           echo "Modelfiles created:"
