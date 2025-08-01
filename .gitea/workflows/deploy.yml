@@ -74,6 +74,7 @@ jobs:
           echo "quant_strategist: $(cat Modelfile.quant_strategist)"
           echo "quant_dev: $(cat Modelfile.quant_dev)"
 
+          echo "$(docker exec ollama ls /Modelfiles/)"
           docker cp Modelfiles/Modelfile.quant_strategist ollama:/Modelfiles/Modelfile.quant_strategist
           docker cp Modelfiles/Modelfile.quant_dev ollama:/Modelfiles/Modelfile.quant_dev
 
