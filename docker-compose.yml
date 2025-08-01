@@ -2,7 +2,7 @@ services:
   ollama:
     container_name: ollama
     image: docker.io/ollama/ollama:latest
-    build: .docker exec ollama
+    build: .
     pull_policy: always
     restart: unless-stopped
     tty: true
