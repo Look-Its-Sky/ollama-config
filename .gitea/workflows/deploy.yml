@@ -46,7 +46,7 @@ jobs:
         env:
           BASE_MODEL: ${{ github.event.inputs.base_model }}
         run: |
-          sudo apt update
+          sudo apt-get update
           sudo apt-get install -y gettext
           
           envsubst < Modelfiles/Modelfile.quant_strategist_template > Modelfile.quant_strategist
