@@ -78,18 +78,15 @@ jobs:
           docker cp Modelfile.quant_strategist ollama:/Modelfiles/Modelfile.quant_strategist
           docker cp Modelfile.quant_dev ollama:/Modelfiles/Modelfile.quant_dev
 
-      - name: Verify Modelfiles
-        run: |
-          echo "Host Modelfiles:"
-          ls -la ./Modelfiles/
-
-          echo "Container Modelfiles:"
-          docker exec ollama ls -la /Modelfiles/
-         
       - name: Pull Models 
         run: |
-          docker exec ollama ollama pull "${{ vars.BASE_MODEL_STRATEGIST }}" > /dev/null
-          docker exec ollama ollama pull "${{ vars.BASE_MODEL_DEV }}" > /dev/null
+          if ! docker exec ollama ollama list | grep -q "${{ vars.BASE_MODEL_STRATEGIST }}"; then
+            docker exec ollama ollama pull "${{ vars.BASE_MODEL_STRATEGIST }}" > /dev/null
+          fi
+
+          if ! docker exec ollama ollama list | grep -q "${{ vars.BASE_MODEL_DEV }}"; then
+            docker exec ollama ollama pull "${{ vars.BASE_MODEL_DEV }}" > /dev/null
+          fi
 
       - name: Create From Modelfiles
         run: |
