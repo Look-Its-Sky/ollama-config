@@ -96,19 +96,19 @@ jobs:
                 }' > /dev/null &
           pids+=($!)
 
-          curl --silent --show-error --fail -X POST http://$OLLAMA_SERVER/v1/chat/completions \
-            -H "Content-Type: application/json" \
-            -d '{
-                  "model": "quant_dev",
-                  "messages": [
-                    {"role" : "system", "content": "You are mute. You do not respond to any messages"},
-                    {"role": "user", "content": "Initialize"},
-                    {"role": "assistant", "content": ""},
-                    {"role": "user", "content": "Initialize"}
-                  ],
-                  "stream": false
-                }' > /dev/null &
-          pids+=($!)
+          # curl --silent --show-error --fail -X POST http://$OLLAMA_SERVER/v1/chat/completions \
+          #   -H "Content-Type: application/json" \
+          #   -d '{
+          #         "model": "quant_dev",
+          #         "messages": [
+          #           {"role" : "system", "content": "You are mute. You do not respond to any messages"},
+          #           {"role": "user", "content": "Initialize"},
+          #           {"role": "assistant", "content": ""},
+          #           {"role": "user", "content": "Initialize"}
+          #         ],
+          #         "stream": false
+          #       }' > /dev/null &
+          # pids+=($!)
 
           for pid in "${pids[@]}"; do
               wait "$pid"
