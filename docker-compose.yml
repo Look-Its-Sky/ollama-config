@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     tty: true
     volumes:
-      - ./Modelfiles:/Modelfiles:z
+      # - ./Modelfiles:/Modelfiles:z
       - /tank/llm/ollama:/root/.ollama:z
     ports:
       - 0.0.0.0:7869:11434

@@ -20,7 +20,10 @@ jobs:
 
       - name: Deploy Service 
         run: |
-          docker compose down
+          docker compose down || true
+          docker stop ollama || true
+          docker rm ollama || true
+
           docker compose up -d --build
 
       - name: Wait for Ollama to be ready
