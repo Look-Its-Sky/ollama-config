@@ -64,11 +64,11 @@ jobs:
           echo "Container Modelfiles:"
           docker exec ollama ls -la /Modelfiles/
 
+          docker exec ollama mkdir -p /Modelfiles
+
           # If empty, copy manually as fallback
           if [ -z "$(docker exec ollama ls /Modelfiles/ 2>/dev/null)" ]; then
             echo "Volume mount failed, copying manually..."
-
-            docker exec ollama mkdir -p /Modelfiles
             docker cp ./Modelfiles/. ollama:/Modelfiles/
           fi
 
