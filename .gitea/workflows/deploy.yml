@@ -22,10 +22,23 @@ jobs:
 
       - name: Deploy Service 
         run: |
-          # docker compose down  || true
-          docker stop ollama || true
-          docker rm ollama || true
+          hadtostop=true 
+
+          echo "Stopping and removing existing Ollama container.... if any"
+
+          # docker compose down  || hadtostop=false 
+          docker stop ollama || hadtostop=false
+          docker rm ollama || hadtostop=false 
           # docker compose up -d --build
+
+          if [ "$hadtostop" = true ]; then
+            echo "Ollama container stopped and removed successfully."
+          else
+            echo "No existing Ollama container to stop."
+          fi
+
+          docker build \
+              --build-arg ${{  }}
 
           docker run -d \
               --name ollama \
@@ -39,7 +52,7 @@ jobs:
               -e OLLAMA_MAX_LOADED_MODELS=1 \
               -e OLLAMA_CONTEXT_LENGTH=1024 \
               -e OLLAMA_KV_CACHE_TYPE=q4_0 \
-              ollama/ollama:latest
+              ollama-custom
 
       - name: Wait for Ollama to be ready
         run: |
@@ -58,7 +71,8 @@ jobs:
 
       - name: Create Modelfile from Template
         env:
-          BASE_MODEL: ${{ github.event.inputs.base_model }}
+          BASE_MODEL_STRATEGIST:  ${{ vars.BASE_MODEL_STRATEGIST }}
+          BASE_MODEL_DEV:  ${{ vars.BASE_MODEL_DEV }}
         run: |
           sudo apt-get update
           sudo apt-get install -y gettext
