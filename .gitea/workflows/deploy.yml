@@ -90,8 +90,6 @@ jobs:
 
       - name: Create From Modelfiles
         run: |
-          docker exec ollama ls -laR /Modelfiles
-
           docker exec ollama ollama rm quant_dev quant_strategist || true
 
           docker exec ollama ollama create quant_strategist -f /Modelfiles/Modelfile.quant_strategist
