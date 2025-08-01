@@ -26,11 +26,6 @@ jobs:
             echo "No existing Ollama container to stop."
           fi
 
-          docker build \
-              --build-arg BASE_MODEL_STRATEGIST=${{ vars.BASE_MODEL_STRATEGIST }} \
-              --build-arg BASE_MODEL_DEV=${{ vars.BASE_MODEL_DEV }} \
-              -t ollama-custom .
-
           docker run -d \
               --name ollama \
               --restart unless-stopped \
@@ -43,7 +38,7 @@ jobs:
               -e OLLAMA_MAX_LOADED_MODELS=1 \
               -e OLLAMA_CONTEXT_LENGTH=1024 \
               -e OLLAMA_KV_CACHE_TYPE=q4_0 \
-              ollama-custom
+              ollama/ollama:latest
 
       - name: Wait for Ollama to be ready
         run: |
@@ -86,13 +81,8 @@ jobs:
 
           echo "Container Modelfiles:"
           docker exec ollama ls -la /Modelfiles/
-
-          # If empty, copy manually as fallback
-          if [ -z "$(docker exec ollama ls /Modelfiles/ 2>/dev/null)" ]; then
-            echo "Volume mount failed, copying manually..."
-            docker cp ./Modelfiles/. ollama:/Modelfiles/
-          fi
-
+          docker cp ./Modelfiles/. ollama:/Modelfiles/
+         
       - name: Pull Models 
         run: |
           docker exec ollama ollama pull "${{ vars.BASE_MODEL_STRATEGIST }}" > /dev/null
