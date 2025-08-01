@@ -53,7 +53,7 @@ jobs:
           
           envsubst < Modelfiles/Modelfile.quant_strategist_template > Modelfile.quant_strategist
           envsubst < Modelfiles/Modelfile.quant_dev_template > Modelfile.quant_dev 
-        
+
           echo "Modelfiles created:"
           echo "quant_strategist: $(cat Modelfile.quant_strategist)"
           echo "quant_dev: $(cat Modelfile.quant_dev)"
