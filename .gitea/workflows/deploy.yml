@@ -22,11 +22,24 @@ jobs:
 
       - name: Deploy Service 
         run: |
-          docker compose down  || true
+          # docker compose down  || true
           docker stop ollama || true
           docker rm ollama || true
+          # docker compose up -d --build
 
-          docker compose up -d --build
+          docker run -d \
+              --name ollama \
+              --restart unless-stopped \
+              --gpus all \
+              --cpus="16" \
+              -p 0.0.0.0:7869:11434 \
+              -v /tank/llm/ollama:/root/.ollama:z \
+              -e OLLAMA_KEEP_ALIVE=1h \
+              -e OLLAMA_FLASH_ATTENTION=1 \
+              -e OLLAMA_MAX_LOADED_MODELS=1 \
+              -e OLLAMA_CONTEXT_LENGTH=1024 \
+              -e OLLAMA_KV_CACHE_TYPE=q4_0 \
+              ollama/ollama:latest
 
       - name: Wait for Ollama to be ready
         run: |
