@@ -6,6 +6,7 @@ on:
 
 jobs:
   deploy:
+    runs-on: z420
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
