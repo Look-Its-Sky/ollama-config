@@ -3,7 +3,7 @@ FROM ${BASE_MODEL_STRATEGIST}
 PARAMETER temperature 0.1
 PARAMETER top_k 40
 PARAMETER top_p 0.9
-PARAMETER num_gpu 12 
+PARAMETER num_gpu 64
 
 SYSTEM """
 You are an expert quantitative strategist and AI assistant. Your capabilities include:
